@@ -4,14 +4,20 @@ const Schema = mongoose.Schema;
 let Sensor = new Schema({
   ser_no: String,
   last_online: {
-    type: Date
+    type: Date,
+    default: Date.now,
+    required: false
   },
   logs: [ 
     {
       //humidity: Number,
       temperature: Number,
       concentration: Number,
-      time_stamp: Date
+      time_stamp: {
+        type: Date,
+        default: Date.now,
+        required: false 
+      }
     }
   ]
 });

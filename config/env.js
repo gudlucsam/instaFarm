@@ -1,5 +1,5 @@
 const url = require('url');
-const mqtt_url = url.parse(process.env.CLOUDMQTT_URL);
+const mqtt_url = url.parse(process.env.CLOUDMQTT_URL || 'mqtt://localhost:1883');
 const mqtt_auth = (mqtt_url.auth || ':').split(':');
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
   },
   mqtt: {
     url: mqtt_url,
-    channel: process.env.MQTT_CHANNEL,
+    //channel: process.env.MQTT_CHANNEL,
     options: {
       port: mqtt_url.port,
       host: mqtt_url.host,
