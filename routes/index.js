@@ -1,17 +1,34 @@
 var express = require('express');
 var router = express.Router();
-let i = 20000;
 const moment = require('moment');
+<<<<<<< HEAD:instaFarm/routes/index.js
 const {
     connect
 } = require('mqtt');
 const {
     mqtt
 } = require('../config/env');
+=======
+const {connect} = require('mqtt');
+const debug = require('debug')('lpg:index.js');
+const async = require('async');
+
+//Local imports
+const Sensor = require('../models/sensor');
+const {mqtt} = require('../config/env');
+
+let i = 20000;
+
+//Debug the index module
+
+
+//MQTT setup
+>>>>>>> 9c762fa0967fa83f474fbe57114be1b77d48d793:routes/index.js
 const client = connect(
     mqtt.url,
     mqtt.options
 );
+<<<<<<< HEAD:instaFarm/routes/index.js
 const async = require('async');
 const Sensor = require('../models/sensor');
 const debug = require('debug')('lpg:index.js');
@@ -22,6 +39,15 @@ client.once('connect', () => {
         if (err) return debug(err);
         debug(`Connected to ${granted[0].topic}`);
     });
+=======
+
+client.once('connect', () => {
+  debug('MQTT client connected.');
+  client.subscribe("#", (err, granted) => {
+    if (err) return debug(err);
+    debug(`Subscribed to ${granted[0].topic}`);
+  });
+>>>>>>> 9c762fa0967fa83f474fbe57114be1b77d48d793:routes/index.js
 });
 
 /* GET home page. */
@@ -52,6 +78,7 @@ router.get('/chartdata', (req, res) => {
         logs: {
             $slice: -10
         }
+<<<<<<< HEAD:instaFarm/routes/index.js
     }).exec((err, logs) => {
         if (err) return res.send(err);
         var chart = {
@@ -84,6 +111,16 @@ router.get('/chartdata', (req, res) => {
         );
         // res.json(logs);
     });
+=======
+        callback();
+      },
+      err => {
+        if (err) return res.status(500).send(err);
+        res.json(chart);
+      }
+    );
+  });
+>>>>>>> 9c762fa0967fa83f474fbe57114be1b77d48d793:routes/index.js
 });
 
 
@@ -94,6 +131,7 @@ router.get('/logs', function(req, res, next) {
     });
 
 });
+<<<<<<< HEAD:instaFarm/routes/index.js
 router.get('/tabledata', function(req, res) {
     Sensor.findOne({}, {
         logs: 1
@@ -103,6 +141,20 @@ router.get('/tabledata', function(req, res) {
     });
 });
 
+=======
+
+
+router.get('/tabledata', function (req, res) {
+  Sensor.findOne({}, {
+    logs: 1
+  }).exec((err, result) => {
+    if (err) return debug(err);
+    res.json(result);
+  });
+});
+
+//MQTT endpoints
+>>>>>>> 9c762fa0967fa83f474fbe57114be1b77d48d793:routes/index.js
 router.get('/update', (req, res, next) => {
     let query = req.query;
     query.time_stamp = new Date();

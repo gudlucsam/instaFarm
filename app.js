@@ -4,30 +4,68 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var { database } = require('./config/env');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var mongoose = require('mongoose');
 var app = express();
 var debug = require('debug')('lpg:app.js');
+
+//Local imports
+var { database } = require('./config/env');
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var port = process.env.PORT || 5000;
+
 mongoose.Promise = require('bluebird');
+
+//Configure database
 mongoose.connect(database.url, {
+<<<<<<< HEAD:instaFarm/app.js
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 1000,
     useNewUrlParser: true
+=======
+  reconnectTries: Number.MAX_VALUE,
+  reconnectInterval: 1000,
+  useNewUrlParser: true,
+  useFindAndModify:false
 });
+
+// MONGOOSE DEFAULTS
+mongoose.connection.on('connected', function() {
+  debug('Mongoose default connection connected');
+});
+mongoose.connection.on('error', function(err) {
+  debug('Mongoose default connection error:' + err);
+});
+mongoose.connection.on('disconnected', function() {
+  debug('Mongoose default connection disconnected');
+});
+process.on('SIGINT', function() {
+  mongoose.connection.close(function() {
+    console.log('Mongoose default connection disconnected on app termination');
+    debug('Mongoose default connection disconnected on app termination');
+    process.exit(0);
+  });
+>>>>>>> 9c762fa0967fa83f474fbe57114be1b77d48d793:app.js
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+//Middleware setup 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+app.get('/test', function (req, res) {
+  res.send('Hello World!')
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -45,8 +83,11 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
+app.listen(port, () => console.log(`Instafarm app listening on port ${port}!`))
+
 module.exports = app;
 
+<<<<<<< HEAD:instaFarm/app.js
 // MONGOOSE DEFAULTS
 mongoose.connection.on('connected', function() {
     debug('Mongoose default connection connected');
@@ -64,3 +105,6 @@ process.on('SIGINT', function() {
         process.exit(0);
     });
 });
+=======
+
+>>>>>>> 9c762fa0967fa83f474fbe57114be1b77d48d793:app.js
