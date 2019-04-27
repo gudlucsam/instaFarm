@@ -51,6 +51,7 @@ router.get('/ping', function (req, res, next) {
   res.send('PONG');
 });
 
+// Humidity chart
 router.get('/chartdata', (req, res) => {
   Sensor.findOne({}, {
     logs: {
@@ -60,10 +61,11 @@ router.get('/chartdata', (req, res) => {
     if (err) return res.send(err);
     var chart = {
       chart: {
-        caption: 'Concentration of LPG',
-        subCaption: 'In PPM (parts per million)',
+        caption: 'Moisture in the Soil',
+        subCaption: 'In grams of water vapor per cubic meter of air(g/m3)',
         xAxisName: 'Time',
-        yAxisName: 'Concentration',
+        yAxisName: 'Humidity',
+        numberSuffix: "g/m3",
         theme: 'fusion'
       },
       data: []
@@ -74,7 +76,7 @@ router.get('/chartdata', (req, res) => {
         try {
           chart.data[key] = {
             label: moment(value.time_stamp).fromNow('m'),
-            value: value.concentration
+            value: value.humidity
           };
         } catch (e) {
           return callback(e);
@@ -89,6 +91,83 @@ router.get('/chartdata', (req, res) => {
   });
 });
 
+// Water level chart
+router.get('/water-level', (req, res) => {
+  Sensor.findOne({}, {
+    logs: {
+      $slice: -10
+    }
+  }).exec((err, logs) => {
+    if (err) return res.send(err);
+    var chart = {
+      chart: {
+        caption: 'Water level of the soil',
+        subCaption: 'In cumic meters',
+        xAxisName: 'Time',
+        yAxisName: 'Water level',
+        theme: 'fusion'
+      },
+      data: []
+    };
+    async.forEachOf(
+      logs.logs,
+      (value, key, callback) => {
+        try {
+          chart.data[key] = {
+            label: moment(value.time_stamp).fromNow('m'),
+            value: value.water_level
+          };
+        } catch (e) {
+          return callback(e);
+        }
+        callback();
+      },
+      err => {
+        if (err) return res.status(500).send(err);
+        res.json(chart);
+      }
+    );
+  });
+});
+
+// Temperature chart 
+router.get('/temperature', (req, res) => {
+  Sensor.findOne({}, {
+    logs: {
+      $slice: -10
+    }
+  }).exec((err, logs) => {
+    if (err) return res.send(err);
+    var chart = {
+      chart: {
+        caption: 'Temperature of the soil',
+        subCaption: 'In degree celcius',
+        xAxisName: 'Time',
+        yAxisName: 'Temperature',
+        theme: 'fusion'
+      },
+      data: []
+    };
+    async.forEachOf(
+      logs.logs,
+      (value, key, callback) => {
+        try {
+          chart.data[key] = {
+            label: moment(value.time_stamp).fromNow('m'),
+            value: value.temperature
+          };
+        } catch (e) {
+          return callback(e);
+        }
+        callback();
+      },
+      err => {
+        if (err) return res.status(500).send(err);
+        res.json(chart);
+      }
+    );
+  });
+});
 
 router.get('/logs', function (req, res, next) {
   res.render('table', {
@@ -96,7 +175,7 @@ router.get('/logs', function (req, res, next) {
   });
 });
 
-
+// Sensor reading history
 router.get('/tabledata', function (req, res) {
   Sensor.findOne({}, {
     logs: 1
@@ -111,18 +190,18 @@ router.get('/update', (req, res, next) => {
   let query = req.query;
   query.time_stamp = new Date();
 
-  client.publish(req.query.channel, JSON.stringify(query), err => {
+  client.publish(req.query.name, JSON.stringify(query), err => {
     if (err) {
       debug(err);
       return res.status(500).send(err.message);
     }
     Sensor.findOneAndUpdate({
-      ser_no: req.query.channel
+      name: req.query.name
     }, {
       $addToSet: {
         logs: {
-          //humidity: req.query.humidity,
-          concentration: req.query.conc,
+          humidity: req.query.humidity,
+          water_level: req.query.water_level,
           temperature: req.query.temperature,
           time_stamp: query.time_stamp
         }
@@ -136,7 +215,6 @@ router.get('/update', (req, res, next) => {
 });
 
 router.post('/create-sensor', function (req, res, next) {
-  // res.render('table', { title: 'Raw Data' });
   var newSensor = new Sensor(req.body);
   newSensor.save((err, result) => {
     if (err) return debug(err);
@@ -147,8 +225,6 @@ router.post('/create-sensor', function (req, res, next) {
 
 router.get('/stream', (req, res) => {
   req.socket.setTimeout(Number.MAX_SAFE_INTEGER);
-  // req.socket.setTimeout((i *= 6));
-
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
@@ -162,7 +238,6 @@ router.get('/stream', (req, res) => {
 
   // When the data arrives, send it in the form
   client.on('message', (topic, message) => {
-    // if (topic == process.env.MQTT_CHANNEL)
     res.write('data:' + message + '\n\n');
   });
 

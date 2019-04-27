@@ -2,17 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let Sensor = new Schema({
-  ser_no: String,
-  last_online: {
-    type: Date,
-    default: Date.now,
-    required: false
-  },
+  name: String,   //channel
   logs: [ 
     {
-      //humidity: Number,
-      temperature: Number,
-      concentration: Number,
+      humidity: Number,  //moisture sensor
+      temperature: Number,  //temperature sensor
+      water_level: Number,   //water level sensor
       time_stamp: {
         type: Date,
         default: Date.now,
