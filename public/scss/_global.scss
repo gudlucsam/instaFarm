@@ -1,81 +1,52 @@
-body,
+// Global component styles
+
 html {
-  width: 100%;
-  height: 100%;
+  position: relative;
+  min-height: 100%;
 }
 
 body {
-  @include body-font;
+  height: 100%;
 }
 
-// Custom Button Size
-.btn-xl {
-  padding: 1.25rem 2.5rem;
-}
-
-// Content Section
-.content-section {
-  padding-top: 7.5rem;
-  padding-bottom: 7.5rem;
-}
-
-.content-section-heading {
-  h2 {
-    font-size: 3rem;
-  }
-  h3 {
-    font-size: 1rem;
-    text-transform: uppercase;
+a {
+  &:focus {
+    outline: none;
   }
 }
 
-// Typography
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 700;
-}
-
-.text-faded {
-  color: fade-out($white, 0.3);
-}
-
-/* Map */
-
-.map {
-  height: 30rem;
-}
-
-@media(max-width: 992px) {
-  .map {
-    height: 75%;
+// Main page wrapper
+#wrapper {
+  display: flex;
+  #content-wrapper {
+    background-color: $gray-100;
+    width: 100%;
+    overflow-x: hidden;
+    #content {
+      flex: 1 0 auto;
+    }
   }
 }
 
-.map iframe {
-  pointer-events: none;
+// Set container padding to match gutter width instead of default 15px
+.container,
+.container-fluid {
+  padding-left: $grid-gutter-width;
+  padding-right: $grid-gutter-width;
 }
 
 // Scroll to top button
 .scroll-to-top {
   position: fixed;
-  right: 15px;
-  bottom: 15px;
-
+  right: 1rem;
+  bottom: 1rem;
   display: none;
-
-  width: 50px;
-  height: 50px;
-
+  width: 2.75rem;
+  height: 2.75rem;
   text-align: center;
-
-  color: white;
+  color: $white;
   background: fade-out($gray-800, .5);
-
-  line-height: 45px;
+  line-height: 46px;
   &:focus,
   &:hover {
     color: white;
