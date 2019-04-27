@@ -15,28 +15,24 @@
 
   <!-- Custom styles for this template -->
   <link href="/css/scrolling-nav.css" rel="stylesheet">
- <!-- Step 1 - Including the fusioncharts core library -->
-  <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
-  <!-- Step 2 - Including the fusion theme -->
-  <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+
 </head>
 
 <body id="page-top">
+
   <section class="callout" style="padding: 30px auto; ">
     <div class="container text-left">
       <div class="row">
-        {{!-- Chart starts --}}
         <div class="col-md-8">
           <div id="chart-container">Fusion Chart Here</div>
         </div>
-        {{!-- chart ends --}}
         <div class="col-md-2" style="padding:auto 50px">
           <div class="card" style="width: 18rem;border:5px solid black">
             <div class="card-body">
-              <h5 class="card-title">Humidity</h5>
-              <h6 class="card-subtitle mb-2 text-muted"><small>g/m3</small></h6>
+              <h5 class="card-title">Gas Concentration</h5>
+              <h6 class="card-subtitle mb-2 text-muted">LPG<small>ppm</small></h6>
               <p class="card-text text-center" id="gas-conc" style="font-size:50px">
-                {{#if result.humidity}}{{result.humidity}}{{else}}--{{/if}}
+                {{#if result.concentration}}{{result.concentration}}{{else}}--{{/if}}
               </p>
 
               <small class="float-right">time: <span class="t_stamp">{{#if
@@ -60,6 +56,8 @@
 
         </div>
       </div>
+      {{!-- <a class="btn btn-primary btn-xl" href="https://startbootstrap.com/template-overviews/stylish-portfolio/">Download
+        Now!</a> --}}
     </div>
   </section>
 
@@ -69,7 +67,19 @@
       frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
       <a href="https://www.maps.ie/map-my-route/">Draw map route</a>
     </iframe>
+    {{!-- <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe>
+    <br />
+    <small>
+      <a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a>
+    </small> --}}
   </section>
+
+
+  {{!-- <div style="width: 100%">
+  </div><br /> --}}
+
+  <script type="text/javascript" src="/js/fusioncharts.js"></script>
+  <script type="text/javascript" src="/js/themes/fusioncharts.theme.fusion.js"></script>
   <script type="text/javascript" src="/js/chart.js"></script>
 </body>
 
