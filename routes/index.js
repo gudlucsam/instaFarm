@@ -13,7 +13,6 @@ let i = 20000;
 
 //Debug the index module
 
-
 //MQTT setup
 const client = connect(
     mqtt.url,
