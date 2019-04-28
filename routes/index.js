@@ -28,8 +28,14 @@ client.once('connect', () => {
     });
 });
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
+    res.render('home', {
+        title: 'InstaFarm'
+    });
+});
+
+/* GET home page. */
+router.get('/current', function(req, res, next) {
     Sensor.findOne({}, {
         logs: {
             $slice: -1
@@ -40,7 +46,7 @@ router.get('/', function(req, res, next) {
         })
         console.log(result)
         res.render('index', {
-            title: 'Airkwality',
+            title: 'InstaFarm',
             result: result.logs[0]
         });
     });
