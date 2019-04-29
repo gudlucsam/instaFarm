@@ -242,6 +242,7 @@ router.post('/create-sensor', function(req, res, next) {
 
 
 router.get('/stream', (req, res) => {
+    console.log("sjdnsajndskandaskjndjsk");
     req.socket.setTimeout(Number.MAX_SAFE_INTEGER);
     res.writeHead(200, {
         'Content-Type': 'text/event-stream',
@@ -256,6 +257,7 @@ router.get('/stream', (req, res) => {
 
     // When the data arrives, send it in the form
     client.on('message', (topic, message) => {
+
         res.write('data:' + message + '\n\n');
     });
 
