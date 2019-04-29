@@ -63,9 +63,9 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Charts</h6>
-            <a class="collapse-item" href="utilities-color.html">Humidity</a>
-            <a class="collapse-item" href="utilities-border.html">Water Level</a>
-            <a class="collapse-item" href="utilities-animation.html">Temperature</a>
+            <a class="collapse-item" href="#humdity">Humidity</a>
+            <a class="collapse-item" href="#waterlevel">Water Level</a>
+            <a class="collapse-item" href="#temperature">Temperature</a>
           </div>
         </div>
       </li>
@@ -328,7 +328,7 @@
           </div>
 
           <!-- Content Row -->
-          <div class="row">
+          <div class="row" id="temperature">
 
             <!-- Area Chart (Humidity) -->
             <div class="col-xl-8 col-lg-7">
@@ -399,7 +399,7 @@
 
 
           <!-- Content Row -->
-          <div class="row">
+          <div class="row" id="waterlevel">
           
             <!-- Area Chart (Water Level) -->
             <div class="col-xl-8 col-lg-7">
@@ -472,7 +472,7 @@
           <!-- End charts -->
 
           <!-- Content Row -->
-          <div class="row">
+          <div class="row" id="temperature">
           
             <!-- Area Chart (Temperature) -->
             <div class="col-xl-8 col-lg-7">
@@ -528,7 +528,7 @@
                   <div class="chart-pie pt-4 pb-2">
                     <div id="myAreaChartTemperature">
                       <p class="card-text text-center" id="gas-conc" style="font-size:80px">
-                        <span>{{#if result.temperature}}{{result.temperature}}{{else}}--{{/if}}</span>
+                        <span>{{#if result.temperature}}{{result.temperature}}{{else}}--{{/if}}°C</span>
                       </p>
           
                     </div>

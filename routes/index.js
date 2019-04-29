@@ -117,7 +117,7 @@ router.get('/water-level', (req, res) => {
                 subCaption: 'In cumic meters',
                 xAxisName: 'Time',
                 yAxisName: 'Water level',
-                numberSuffix: "m3",
+                numberSuffix: "g/m³",
                 theme: 'fusion'
             },
             data: []
@@ -157,7 +157,7 @@ router.get('/temperature', (req, res) => {
                 subCaption: 'In degree celcius',
                 xAxisName: 'Time',
                 yAxisName: 'Temperature',
-                numberSuffix: "0C",
+                numberSuffix: "°C",
                 theme: 'fusion'
             },
             data: []

@@ -143,4 +143,4 @@ function drawLineChartTemperature() {
 
 }
 
-drawLineChartTemperature()
+drawLineChartTemperature();
