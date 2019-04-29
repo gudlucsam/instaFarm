@@ -27,8 +27,26 @@ client.once('connect', () => {
     });
 });
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
+    res.render('home', {
+        title: 'InstaFarm'
+    });
+});
+
+router.get('/login', function(req, res, next) {
+    res.render('login', {
+        title: 'InstaFarm'
+    });
+});
+
+router.get('/dashboard', function(req, res, next) {
+    res.render('index', {
+        title: 'InstaFarm'
+    });
+});
+
+/* GET home page. */
+router.get('/current', function(req, res, next) {
     Sensor.findOne({}, {
         logs: {
             $slice: -1
