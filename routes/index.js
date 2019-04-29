@@ -39,14 +39,8 @@ router.get('/login', function(req, res, next) {
     });
 });
 
-router.get('/dashboard', function(req, res, next) {
-    res.render('index', {
-        title: 'InstaFarm'
-    });
-});
-
 /* GET home page. */
-router.get('/current', function(req, res, next) {
+router.get('/dashboard', function(req, res, next) {
     Sensor.findOne({}, {
         logs: {
             $slice: -1
@@ -123,6 +117,7 @@ router.get('/water-level', (req, res) => {
                 subCaption: 'In cumic meters',
                 xAxisName: 'Time',
                 yAxisName: 'Water level',
+                numberSuffix: "m3",
                 theme: 'fusion'
             },
             data: []
@@ -162,6 +157,7 @@ router.get('/temperature', (req, res) => {
                 subCaption: 'In degree celcius',
                 xAxisName: 'Time',
                 yAxisName: 'Temperature',
+                numberSuffix: "0C",
                 theme: 'fusion'
             },
             data: []
