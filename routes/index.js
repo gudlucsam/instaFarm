@@ -39,14 +39,9 @@ router.get('/login', function(req, res, next) {
     });
 });
 
-router.get('/dashboard', function(req, res, next) {
-    res.render('index', {
-        title: 'InstaFarm'
-    });
-});
 
 /* GET home page. */
-router.get('/current', function(req, res, next) {
+router.get('/dashboard', function(req, res, next) {
     Sensor.findOne({}, {
         logs: {
             $slice: -1
