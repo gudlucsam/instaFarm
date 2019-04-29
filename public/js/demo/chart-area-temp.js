@@ -27,33 +27,15 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     return s.join(dec);
 }
 
-// AJAX REQUEST WITH EVENT SOURCE TO GET DATA
-// window.onload = () => {
-
-//     var evtSource = new EventSource('/stream');
-//     evtSource.onmessage = e => {
-//         console.log("ajsdfksjadbnkjsadnsan", data)
-//         let data = JSON.parse(e.data);
-
-//         document.getElementById('humidity').innerText = data.humidity;
-//         document.getElementById('gas-conc').innerText = data.conc;
-//         document.getElementById('temperature').innerText = data.temperature;
-
-//         let ts = document.getElementsByClassName('t_stamp');
-//         [].forEach.call(document.getElementsByClassName('t_stamp'), el => {
-//             el.innerText = `${new Date(data.time_stamp)}`;
-//         });
-//     };
-// };
 
 
 
 
-// draw chart with humidity  data
-function drawLineChart() {
+// draw chart with temperature  data
+function drawLineChartTemperature() {
 
     var jsonData = $.ajax({
-        url: 'http://localhost:5000/chartdata',
+        url: 'http://localhost:5000/temperature',
         dataType: 'json',
     }).done(function(results) {
 
@@ -68,7 +50,7 @@ function drawLineChart() {
         });
 
         // Area Chart Example
-        var ctx = document.getElementById("myAreaChartHumdity");
+        var ctx = document.getElementById("myAreaChartTemperature");
         var myLineChart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -101,7 +83,7 @@ function drawLineChart() {
                 },
                 scales: {
                     xAxes: [{
-                        Humidity: {
+                        Temperature: {
                             unit: 'date'
                         },
                         gridLines: {
@@ -161,4 +143,4 @@ function drawLineChart() {
 
 }
 
-drawLineChart();
+drawLineChartTemperature()
