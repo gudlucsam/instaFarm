@@ -16,6 +16,7 @@ var port = process.env.PORT || 5000;
 
 mongoose.Promise = require('bluebird');
 
+// "mongodb://mustapha:mIccS155pL5KNhWr@oralnotes-shard-00-00-1dlzq.mongodb.net:27017,oralnotes-shard-00-01-1dlzq.mongodb.net:27017,oralnotes-shard-00-02-1dlzq.mongodb.net:27017/test?ssl=true&replicaSet=oralnotes-shard-0&authSource=admin&retryWrites=true", }
 //Configure database
 mongoose.connect(database.url, {
     reconnectTries: Number.MAX_VALUE,

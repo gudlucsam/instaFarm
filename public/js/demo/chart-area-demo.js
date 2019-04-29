@@ -26,31 +26,44 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     }
     return s.join(dec);
 }
-
 // AJAX REQUEST WITH EVENT SOURCE TO GET DATA
-// window.onload = () => {
+window.onload = () => {
+    var evtSource = new EventSource('/stream');
+    evtSource.onmessage = e => {
+        let data = JSON.parse(e.data);
+        document.getElementById('gas-conc').innerText = data.conc;
+        document.getElementById('temperature').innerText = data.temperature;
+        document.getElementById('humidity').innerText = data.humidity;
 
-//     var evtSource = new EventSource('/stream');
-//     evtSource.onmessage = e => {
-//         console.log("ajsdfksjadbnkjsadnsan", data)
-//         let data = JSON.parse(e.data);
+        let ts = document.getElementsByClassName('t_stamp');
+        [].forEach.call(document.getElementsByClassName('t_stamp'), el => {
+            el.innerText = `${new Date(data.time_stamp)}`;
+        });
+    };
+};
 
-//         document.getElementById('humidity').innerText = data.humidity;
-//         document.getElementById('gas-conc').innerText = data.conc;
-//         document.getElementById('temperature').innerText = data.temperature;
-
-//         let ts = document.getElementsByClassName('t_stamp');
-//         [].forEach.call(document.getElementsByClassName('t_stamp'), el => {
-//             el.innerText = `${new Date(data.time_stamp)}`;
-//         });
-//     };
-// };
-
-
-
+// FusionCharts.ready(function() {
+//     var fusioncharts = new FusionCharts({
+//         type: 'column2d',
+//         renderAt: 'chart-container',
+//         width: '100%',
+//         height: '400',
+//         dataFormat: 'jsonurl',
+//         dataSource: '/chartdata',
+//         type: 'line'
+//     });
+//     fusioncharts.render();
+// });
 
 // draw chart with humidity  data
 function drawLineChart() {
+
+    // // Add a helper to format timestamp data
+    // Date.prototype.formatMMDDYYYY = function() {
+    //     return (this.getMonth() + 1) +
+    //         "/" + this.getDate() +
+    //         "/" + this.getFullYear();
+    // }
 
     var jsonData = $.ajax({
         url: 'http://localhost:5000/chartdata',
@@ -60,105 +73,124 @@ function drawLineChart() {
         // Split timestamp and data into separate arrays
         var labels = [],
             data = [];
-        chartInfo = results["chart"]
-        chartData = results["data"]
-        chartData.forEach(function(packet) {
-            labels.push(packet.label);
-            data.push(parseFloat(packet.value));
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA", results)
+        results["packets"].forEach(function(packet) {
+            labels.push(new Date(packet.timestamp).formatMMDDYYYY());
+            data.push(parseFloat(packet.payloadString));
         });
 
-        // Area Chart Example
-        var ctx = document.getElementById("myAreaChartHumdity");
-        var myLineChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: chartInfo.caption,
-                    lineTension: 0.3,
-                    backgroundColor: "rgba(78, 115, 223, 0.05)",
-                    borderColor: "rgba(78, 115, 223, 1)",
-                    pointRadius: 3,
-                    pointBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHoverRadius: 3,
-                    pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHitRadius: 10,
-                    pointBorderWidth: 2,
-                    data: data,
-                }],
-            },
-            options: {
-                maintainAspectRatio: false,
-                layout: {
-                    padding: {
-                        left: 10,
-                        right: 25,
-                        top: 25,
-                        bottom: 0
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        Humidity: {
-                            unit: 'date'
-                        },
-                        gridLines: {
-                            display: false,
-                            drawBorder: false
-                        },
-                        ticks: {
-                            maxTicksLimit: 7
-                        }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            maxTicksLimit: 5,
-                            padding: 10,
-                            // Include a dollar sign in the ticks
-                            callback: function(value, index, values) {
-                                return value + " " + chartInfo.numberSuffix;
-                            }
-                        },
-                        gridLines: {
-                            color: "rgb(234, 236, 244)",
-                            zeroLineColor: "rgb(234, 236, 244)",
-                            drawBorder: false,
-                            borderDash: [2],
-                            zeroLineBorderDash: [2]
-                        }
-                    }],
-                },
-                legend: {
-                    display: false
-                },
-                tooltips: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    titleMarginBottom: 10,
-                    titleFontColor: '#6e707e',
-                    titleFontSize: 14,
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 15,
-                    displayColors: false,
-                    intersect: false,
-                    mode: 'index',
-                    caretPadding: 10,
-                    callbacks: {
-                        // label: function(tooltipItem, chart) {
-                        //     var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                        //     return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
-                        // }
-                    }
-                }
-            }
-        });
+        // Create the chart.js data structure using 'labels' and 'data'
+        // var tempData = {
+        //     labels: labels,
+        //     datasets: [{
+        //         fillColor: "rgba(151,187,205,0.2)",
+        //         strokeColor: "rgba(151,187,205,1)",
+        //         pointColor: "rgba(151,187,205,1)",
+        //         pointStrokeColor: "#fff",
+        //         pointHighlightFill: "#fff",
+        //         pointHighlightStroke: "rgba(151,187,205,1)",
+        //         data: data
+        //     }]
+        // };
+
+        // Get the context of the canvas element we want to select
+        // var ctx = document.getElementById("myLineChart").getContext("2d");
+
+        // Instantiate a new chart
+        // var myLineChart = new Chart(ctx).Line(tempData, {
+        //     //bezierCurve: false
+        // });
     });
-
-
 }
 
 drawLineChart();
+
+// Area Chart Example
+var ctx = document.getElementById("myAreaChart");
+var myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        datasets: [{
+            label: "Earnings",
+            lineTension: 0.3,
+            backgroundColor: "rgba(78, 115, 223, 0.05)",
+            borderColor: "rgba(78, 115, 223, 1)",
+            pointRadius: 3,
+            pointBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointBorderColor: "rgba(78, 115, 223, 1)",
+            pointHoverRadius: 3,
+            pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+            pointHitRadius: 10,
+            pointBorderWidth: 2,
+            data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
+        }],
+    },
+    options: {
+        maintainAspectRatio: false,
+        layout: {
+            padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+            }
+        },
+        scales: {
+            xAxes: [{
+                time: {
+                    unit: 'date'
+                },
+                gridLines: {
+                    display: false,
+                    drawBorder: false
+                },
+                ticks: {
+                    maxTicksLimit: 7
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    maxTicksLimit: 5,
+                    padding: 10,
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, values) {
+                        return '$' + number_format(value);
+                    }
+                },
+                gridLines: {
+                    color: "rgb(234, 236, 244)",
+                    zeroLineColor: "rgb(234, 236, 244)",
+                    drawBorder: false,
+                    borderDash: [2],
+                    zeroLineBorderDash: [2]
+                }
+            }],
+        },
+        legend: {
+            display: false
+        },
+        tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            titleMarginBottom: 10,
+            titleFontColor: '#6e707e',
+            titleFontSize: 14,
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            intersect: false,
+            mode: 'index',
+            caretPadding: 10,
+            callbacks: {
+                label: function(tooltipItem, chart) {
+                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                    return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+                }
+            }
+        }
+    }
+});
