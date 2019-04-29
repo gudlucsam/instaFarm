@@ -56,8 +56,8 @@ router.get('/current', function(req, res, next) {
             error: err
         })
         console.log(result)
-        res.render('index', {
-            title: 'InstaFarm',
+        res.render('index2', {
+            title: 'instaFarm Admin - Dashboard',
             result: result.logs[0]
         });
     });
@@ -87,6 +87,7 @@ router.get('/chartdata', (req, res) => {
             },
             data: []
         };
+
         async.forEachOf(
             logs.logs,
             (value, key, callback) => {
