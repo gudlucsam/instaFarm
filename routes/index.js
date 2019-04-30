@@ -47,9 +47,9 @@ router.get('/dashboard', function(req, res, next) {
         }
     }, function(err, result) {
         if (err) return res.status(500).render('error', {
-            error: err
-        })
-        console.log(result)
+                error: err
+            })
+            // console.log("dsfdfsdfsdfd", result)
         res.render('index2', {
             title: 'instaFarm Admin - Dashboard',
             result: result.logs[0]
@@ -76,7 +76,7 @@ router.get('/chartdata', (req, res) => {
                 subCaption: 'In grams of water vapor per cubic meter of air(g/m3)',
                 xAxisName: 'Time',
                 yAxisName: 'Humidity',
-                numberSuffix: "g/m3",
+                numberSuffix: "g/m³",
                 theme: 'fusion'
             },
             data: []
@@ -117,7 +117,7 @@ router.get('/water-level', (req, res) => {
                 subCaption: 'In cumic meters',
                 xAxisName: 'Time',
                 yAxisName: 'Water level',
-                numberSuffix: "g/m³",
+                numberSuffix: "m³",
                 theme: 'fusion'
             },
             data: []
@@ -189,15 +189,31 @@ router.get('/logs', function(req, res, next) {
     });
 });
 
-// Sensor reading history
-router.get('/tabledata', function(req, res) {
+// sensor reading history
+router.get('/rawdata', function(req, res, next) {
+
     Sensor.findOne({}, {
         logs: 1
     }).exec((err, result) => {
+        console.log(result.logs);
         if (err) return debug(err);
-        res.json(result);
+        res.render('tables2', {
+            results: result.logs
+        });
+
     });
+
 });
+
+// Sensor reading history
+// router.get('/tabledata', function(req, res) {
+//     Sensor.findOne({}, {
+//         logs: 1
+//     }).exec((err, result) => {
+//         if (err) return debug(err);
+//         res.json(result);
+//     });
+// });
 
 //MQTT endpoints
 router.get('/update', (req, res, next) => {
@@ -238,7 +254,6 @@ router.post('/create-sensor', function(req, res, next) {
 
 
 router.get('/stream', (req, res) => {
-    console.log("sjdnsajndskandaskjndjsk");
     req.socket.setTimeout(Number.MAX_SAFE_INTEGER);
     res.writeHead(200, {
         'Content-Type': 'text/event-stream',
