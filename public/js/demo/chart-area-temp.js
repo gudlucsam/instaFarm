@@ -35,7 +35,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 function drawLineChartTemperature() {
 
     var jsonData = $.ajax({
-        url: 'http://localhost:5000/temperature',
+        url: 'https://instafarm.herokuapp.com/temperature',
         dataType: 'json',
     }).done(function(results) {
 

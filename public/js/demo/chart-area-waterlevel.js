@@ -32,7 +32,7 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 function drawLineChartHWaterLevel() {
 
     var jsonData = $.ajax({
-        url: 'http://localhost:5000/water-level',
+        url: 'https://instafarm.herokuapp.com/water-level',
         dataType: 'json',
     }).done(function(results) {
 
